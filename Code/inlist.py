@@ -89,6 +89,15 @@ single_data_sedfit_path = "../Data/Output_Fits/"+sample+"/SEDFits/"+grid+"/Singl
 batch_data_sedfit_path =  "../Data/Output_Fits/"+sample+"/SEDFits/"+grid+"/BatchMode/"
 combined_data_sedfit_path = "../Data/Output_Fits/"+sample+"/SEDFits/"+grid+"/"
 
+######################################################################################################################################
+# mainly for 9_IsochroneFit.py
+bands = ['G', 'BP', 'RP']       # define `bands` used for isochrone fitting
+# paths for input and output data and figures. 
+fig_isochronefit_path = "../Figures/"+sample+"/IsochroneFits/"
+single_data_isochronefit_path = "../Data/Output_Fits/"+sample+"/IsochroneFits/SingleMode/"
+# batch_data_isochronefit_path =  "../Data/Output_Fits/"+sample+"/IsochroneFits/BatchMode/"
+combined_data_isochronefit_path = "../Data/Output_Fits/"+sample+"/IsochroneFits/"
+
 
 # creat some folders.
 if __name__ == '__main__':
