@@ -23,5 +23,9 @@ echo "Step 5: perform SED fitting"
 python 6_SedFit.py 
 
 # (6) Combine the SED-fitting results. A table is generated with all the derived parameter estimates and input parameters.
-echo "Step 6: collecte the SED-fitting results."
+echo "Step 6: collect the SED-fitting results."
 python 7_CollectSEDFits_Parallel.py
+
+# (7) perform Isochrone fitting
+echo "Step 7: perform the Isochrone-fitting and collect results."
+python 9_IsochroneFit.py

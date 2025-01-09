@@ -7,11 +7,11 @@ Lshow = False            # show figures interactively, stwich this off when run 
 Lsave = True             # whether to save fitting results, no mather in the batch mode or single star mode. Useful to unset it for debugging..
 index_start = 0          # index starting from 0. Only works when Lbatch=False
 index_end = 29           # if you have 100 stars, for instance, then index_end should be 100. Only works when Lbatch=False
-sample = "TOIs"          # if one wants to run different samples individually: "TOIs", "Seismic", "APOGEE", "GALAH", "RAVE"
+sample = "sample"        # if one wants to run different samples individually: "TOIs", "Seismic", "APOGEE", "GALAH", "RAVE"
 
 ####################################################################################################################################### 
-gaia_user_name = "jyu01"                                                # Gaia user name.
-gaia_user_password = "Yping:126:"                                       # Gaia user password
+gaia_user_name = ""                                                     # Gaia user name.
+gaia_user_password = ""                                                 # Gaia user password
 file_target_list = "../Data/Input_Fits/"+sample+"/UserInputData.csv"    # taret list
 Xpath = "../Data/Input_Fits/"+sample+"/CrossMatchTables/"               # to save crossmatch tables fetched from the Gaia Archive
 
@@ -34,7 +34,7 @@ L_fig_h5py = False                                # whether to combine all the f
 grid_list_path = "../Data/MetaData/"
 filter_zero_point_path = "../Data/MetaData/filters.dat"
 filter_transmission_path = "../Data/MetaData/SpectralWindows/"
-if grid == "MARCS": grid_spectrum_path = "/home/yujie/Documents/SoftLinks/Scratch/SpectrumGrid/MARCS/Version3/Models/"
+if grid == "MARCS": grid_spectrum_path = "../marcs/marcs_st_flx/"
 if grid == "BOSZ": grid_spectrum_path = "/home/yujie/Documents/SoftLinks/Scratch/SpectrumGrid/BOSZ/Grid/"
 file_input_params = "../Data/Input_Fits/"+sample+"/Input_params.csv"
 file_input_photometry = "../Data/Input_Fits/"+sample+"/Input_Photometry.csv"
@@ -114,3 +114,8 @@ if __name__ == '__main__':
     if not os.path.isdir(single_data_sedfit_path): os.system("mkdir -p " + single_data_sedfit_path)
     if not os.path.isdir(batch_data_sedfit_path): os.system("mkdir -p " + batch_data_sedfit_path)
     if not os.path.isdir(combined_data_sedfit_path): os.system("mkdir -p " + combined_data_sedfit_path)
+    # to save results returned from the isochrone fitting module
+    if not os.path.isdir(fig_sedfit_path): os.system("mkdir -p " + fig_isochronefit_path)
+    if not os.path.isdir(single_data_sedfit_path): os.system("mkdir -p " + single_data_isochronefit_path)
+    # if not os.path.isdir(batch_data_sedfit_path): os.system("mkdir -p " + batch_data_isochronefit_path)
+    if not os.path.isdir(combined_data_sedfit_path): os.system("mkdir -p " + combined_data_isochronefit_path)

@@ -1,15 +1,69 @@
-# SEDEX
-SEDEX is a public pipeline written in Python to carry out SED fitting using MARCS and BOSZ spectral libraries. Based on its current configuration, SEDEX takes Gaia DR3 source ID,  $T_{\rm{eff}}$, $\sigma_{T_{\rm{eff}}}$, $\textrm{log}g$, and $\sigma_{\textrm{log}g}$ as input, where $T_{\rm{eff}}$ is required to lift the $T_{\rm{eff}}-A_V$ degeneracy. SEDEX automatically downloads broadband photometry via Gaia archive. The current supported photometric systems are Gaia ( $G$, $G_{\rm{BP}}, G_{\rm{RP}}$), 2MASS ( $J, H, K_S$), ALLWISE ( $W1, W2, W3, W4$), Hipparcos ( $H_{P}$), Tycho2 ( $B_T, V_T$), SDSS ( $u, g, r, i, z$), Pan-STARRS1 ( $g, r, i, z, y$), APASS ( $V, B, g, r, i$), and SkyMapper ( $u, v, g, r, i, z$), consisting of 34 bandpasses.
+# SEDEX_ISO: An Extended Version of SEDEX with Isochrone Fitting Capability
 
-The output of SEDEX includes bolometric flux, angular radius, extinction, luminosity, and radius. Extinction is a direct output, bolometric flux
-is calculated by integrating the best-fitting spectrum, luminosity is derived by combining bolometric flux and distance, radius is computed from luminosity and input $T_{\rm{eff}}$, and angular radius is inferred from radius and distance. More details can be found in [Yu et al. 2022](https://ui.adsabs.harvard.edu/abs/2022arXiv220600046Y/abstract). Please cite this paper if you use it in your research.
+**SEDEX_ISO** is an enhanced version of SEDEX, incorporating the **isochrone fitting** functionalities from the [astroARIADNE](https://github.com/jvines/astroARIADNE.git) codebase. This integration utilizes the **ISOCHRONE package**, allowing SEDEX_ISO to provide a more comprehensive analysis pipeline for stellar parameters.
 
-## Instructions on how to run SEDEX.
-- Create a Gaia account and input your user name and password in the file $\texttt{inlist.py}$. 
-- Download [MARCS](https://marcs.astro.uu.se/) (standard composition) and [BOSZ](https://archive.stsci.edu/hlsp/bosz/search.php) (solar [C/M], resolution $R=20000$)  spectral libraries.
-- Prepare a list of targets in the file, $\texttt{Data/Input\\_Fits/TOIs/UserInputData.csv}$, with these columns: starID, teff, tefferr, logg, loggerr, feh, feherr, Av, and Averr. Note that starID has to be Gaia DR3 source_id. Av and Averr can be NaN. The sample name, TOIs, can be optionally changed in the file $\texttt{inlist.py}$.
-- Configure the inlist file, $\texttt{inlist.py}$. Suggest to use default values.
-- Run $\texttt{submit.sh}$, if the single star mode is set, or run $\texttt{submit\\_slurm.sh}$ for HPC, if the batch mode is set.
-- Derived parameters are damped into this file:
-	$\texttt{Data/Output\\_Fits/TOIs/SEDFits/MARCS/Output\\_SED\\_Fits\\_Final.csv}$.
- The figures of the Blackbody fitting and SED fitting are stored at $\texttt{Figures/TOIs/}$.
+## Key Features of SEDEX_ISO
+
+SEDEX_ISO extends the capabilities of SEDEX by adding an automated workflow that sequentially performs:
+1. **Blackbody Radiation Fitting** – Initial estimation of stellar parameters.
+2. **SED Fitting** – Utilizing the MARCS and BOSZ spectral libraries for a more precise determination of stellar properties.
+3. **Isochrone Fitting** – Leveraging the **ISOCHRONE package** to derive stellar ages and evolutionary states.
+
+Compared with the original SEDEX, SEDEX_ISO **adds isochrone-based age and mass estimations**, making it a powerful tool for studying stellar evolution.
+
+## Input and Data Handling
+
+SEDEX_ISO follows the core input structure of SEDEX but expands upon it:
+
+- **Input:** A list of target stars, specified in `UserInputData.csv`, containing:
+  - Gaia DR3 `source_id`
+  - Stellar atmospheric parameters:  
+    $T_{\rm{eff}}$, $\sigma_{T_{\rm{eff}}}$, $\log g$, $\sigma_{\log g}$, $\textrm{[Fe/H]}$, $\sigma_{\textrm{[Fe/H]}}$
+  - Extinction parameters: $A_V$, $\sigma_{A_V}$ (optional)
+
+- **Photometry:** SEDEX_ISO automatically retrieves broadband photometry from multiple surveys, including:
+  - Gaia (`G`, `BP`, `RP`)
+  - 2MASS (`J`, `H`, `K_S`)
+  - WISE (`W1`, `W2`, `W3`, `W4`)
+  - Hipparcos, Tycho2, SDSS, Pan-STARRS1, APASS, SkyMapper, and more.
+
+- **Isochrone Models:** SEDEX_ISO reads the **stellar parameters derived from SED Fitting** (such as $T_{\rm{eff}}$, $\sigma_{T_{\rm{eff}}}$, $\log g$, $\sigma_{\log g}$, $\textrm{[Fe/H]}$, $\sigma_{\textrm{[Fe/H]}}$, Gaia photometry (`G`, `BP`, `RP`)) and uses them as inputs for **isochrone fitting**. The fitting process employs **isochrone grids** from the **ISOCHRONE package**, allowing SEDEX_ISO to determine the **stellar age, mass, and evolutionary stage** with improved accuracy.
+
+
+## Output
+
+SEDEX_ISO generates the following results:
+
+- **SED Fitting Parameters** (same as SEDEX)
+  - Effective temperature
+  - Surface gravity
+  - Extinction
+- **Isochrone-Derived Properties:**
+  - Stellar age
+  - Mass
+  - Evolutionary stage classification
+- **Fitting Figures:**
+  - Blackbody fitting
+  - SED fitting
+  - Isochrone fitting
+
+## How to Use SEDEX_ISO
+
+The usage of SEDEX_ISO closely follows SEDEX with additional isochrone fitting steps:
+
+1. **Set up a Gaia account** and input credentials in `inlist.py`.
+2. **Download spectral libraries**: [MARCS](https://marcs.astro.uu.se/) (standard composition) and [BOSZ](https://archive.stsci.edu/hlsp/bosz/search.php) (solar [C/M], resolution $R=20000$).
+3. **Prepare the target list** in `UserInputData.csv`.
+4. **Configure `inlist.py`**, ensuring that the **isochrone fitting step is enabled**.
+5. **Run `submit.sh`** to process the targets through:
+   - Blackbody fitting
+   - SED fitting
+   - Isochrone fitting
+6. **Retrieve results** from:
+   - `../Data/Output_Fits/"sample"/SEDFits/Output_SED_Fits_Final.csv` (SED results)
+   - `../Data/Output_Fits/"sample"/IsochorneFits/Output_Isochrone_Fits.csv` (new isochrone-derived parameters)
+   - Figures in `../Figures/"sample"/`
+
+By incorporating **isochrone fitting**, SEDEX_ISO provides a more **comprehensive** approach to stellar characterization, making it particularly useful for studies involving stellar ages, mass distributions, and evolutionary states.
+
+---
