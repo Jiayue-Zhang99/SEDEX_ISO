@@ -66,7 +66,7 @@ if LgaiaPhot:
     result.loc[:, "phot_bp_mean_mag_error"] = bpmagerr
     result.loc[:, "phot_rp_mean_mag_error"] = rpmagerr
     # select needed columns
-    columns = ["starID", "SOURCE_ID","phot_g_mean_mag","phot_g_mean_mag_error","phot_bp_mean_mag",\
+    columns = ["starID", "source_id","phot_g_mean_mag","phot_g_mean_mag_error","phot_bp_mean_mag",\
         "phot_bp_mean_mag_error","phot_rp_mean_mag","phot_rp_mean_mag_error", "parallax", "parallax_error"]
     result = result[columns]
     result.to_csv(Xpath+"Photometry_GAIA_DR3_Subset"+".csv", index=False, float_format="%.4f")

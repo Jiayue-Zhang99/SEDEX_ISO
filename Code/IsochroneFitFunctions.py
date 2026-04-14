@@ -123,17 +123,17 @@ def get_isochrone(logage, feh):
     iso = mist.isochrone(logage, feh)   # output logTeff, logL, mass
     return iso
 
-
 def estimate(bands, params, logg=True, out_folder='.'):
     """
     Estimate logg using MIST isochrones.
-        `params` should include: 
+        `params` should include:
             - Teff, Teff_err
             - logg, logg_err
             - feh, feh_err
             - distance, distance_err
-        `logg = True`: return logg and error
-        `logg = False`: return age, mass, EEP
+        `logg = True`: return (logg, logg_error)
+        `logg = False`: return (age_Gyr, mass_Msun, eep, logL_samples, radius_Rsun) where
+            `logL_samples` is log10(L/Lsun) and `radius_Rsun` is R/Rsun (MIST posterior).
     """
     mist = get_ichrone('mist', bands=bands)
     model = SingleStarModel(mist, **params) # create a stellar model
@@ -146,7 +146,10 @@ def estimate(bands, params, logg=True, out_folder='.'):
         msg = 'No parallax or distance found.'
         msg += 'Aborting age and mass calculation.'
         InputError(msg).warn()
-        return np.zeros(10), np.zeros(10)
+        z = np.zeros(10)
+        if logg:
+            return z, z
+        return z, z, z, z, z
     # set bayesian priors for feh, mass, AV
     if 'feh' in params.keys():
         fe, fe_e = params['feh']
@@ -170,7 +173,7 @@ def estimate(bands, params, logg=True, out_folder='.'):
         ptform_args=([model])
     )
     try:
-        sampler.run_nested(dlogz=0.01)
+        sampler.run_nested(dlogz=0.01, print_progress=False)
     except ValueError as e:
         dump_out = f'{out_folder}/isochrone_DUMP.pkl'
         pickle.dump(sampler.results, open(dump_out, 'wb'))
@@ -203,13 +206,14 @@ def estimate(bands, params, logg=True, out_folder='.'):
         med, lo, up = credibility_interval(samples, 5)
         med_e = max([med - lo, up - med])
         return med, med_e
-    # return the median and error of age, mass, EEP of fitting results
+    # return age, mass, EEP, log10(L/Lsun), and R/Rsun posterior samples (MIST)
     else:
         age_samples = 10 ** (model._derived_samples['age'] - 9)
         mass_samples = model._derived_samples['mass']
         eep_samples = model._derived_samples['eep']
-        return age_samples, mass_samples, eep_samples
-
+        logL_samples = np.asarray(model._derived_samples['logL'])
+        radius_samples = np.asarray(model._derived_samples['radius'])
+        return age_samples, mass_samples, eep_samples, logL_samples, radius_samples
 
 
 # Written by Dan Foreman-mackey
@@ -246,18 +250,16 @@ def plot_bma_HR(results, out, method, nsamp, hr_figsize=(10, 8), hr_cmap='plasma
     
     # Read stellar parameters
     starID = results["starID"]
-    age = results["Age"]
+    age = results["Age_MIST"]
     feh = results["feh"]
     teff = results["Teff"]
-    lum = results["lumi"]
-    
-    # Compute error in log space to avoid horizontal/vertical error bars
+    # log10(L/Lsun) and dex scatter from MIST posterior
+    log_lum = results["lumi_MIST"]
+    lum_err = results["lumierr_MIST"]
+
+    # Teff in K -> log10(Teff); error mapped to dex for symmetric error bars
     teff_err = np.abs(np.log10(teff + results["Tefferr"]) - np.log10(teff))
-    lum_err = np.abs(np.log10(lum + results["lumierr"]) - np.log10(lum))
-    
-    # Convert Teff and Luminosity to log scale
     log_teff = np.log10(teff)
-    log_lum = np.log10(lum)
 
     # Handle upper limit for FeH
     if feh > 0.5:

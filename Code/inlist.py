@@ -15,7 +15,6 @@ gaia_user_password = "Eld98288707!"                                     # Gaia u
 file_target_list = "../Data/Input_Fits/"+sample+"/UserInputData.csv"    # taret list
 Xpath = "../Data/Input_Fits/"+sample+"/CrossMatchTables/"               # to save crossmatch tables fetched from the Gaia Archive
 
-
 ####################################################################################################################################### 
 # Select a extinction law
 ExtinctionLaw = "F19"                           # CCM89, O94, F99, F04, M14, G16, F19. For more detains see: https://dust-extinction.readthedocs.io/en/stable/index.html
@@ -96,12 +95,14 @@ combined_data_sedfit_path = "../Data/Output_Fits/"+sample+"/SEDFits/"+grid+"/"
 
 ######################################################################################################################################
 # mainly for 9_IsochroneFit.py
-bands = ['G', 'BP', 'RP']       # define `bands` used for isochrone fitting
 # paths for input and output data and figures. 
 fig_isochronefit_path = "../Figures/"+sample+"/IsochroneFits/"
 single_data_isochronefit_path = "../Data/Output_Fits/"+sample+"/IsochroneFits/SingleMode/"
 # batch_data_isochronefit_path =  "../Data/Output_Fits/"+sample+"/IsochroneFits/BatchMode/"
 combined_data_isochronefit_path = "../Data/Output_Fits/"+sample+"/IsochroneFits/"
+# If True, 9_IsochroneFit.py writes ../Data/Output_Fits/<sample>/Output_combines.csv (SED + isochrone columns).
+Lcombine_sed_isochrone = True
+file_output_combine = "../Data/Output_Fits/"+sample+"/Output_combines.csv"
 
 
 # creat some folders.
@@ -124,3 +125,5 @@ if __name__ == '__main__':
     if not os.path.isdir(single_data_isochronefit_path): os.system("mkdir -p " + single_data_isochronefit_path)
     # if not os.path.isdir(batch_data_sedfit_path): os.system("mkdir -p " + batch_data_isochronefit_path)
     if not os.path.isdir(combined_data_isochronefit_path): os.system("mkdir -p " + combined_data_isochronefit_path)
+    out_fits_root = "../Data/Output_Fits/"+sample+"/"
+    if not os.path.isdir(out_fits_root): os.system("mkdir -p " + out_fits_root)
