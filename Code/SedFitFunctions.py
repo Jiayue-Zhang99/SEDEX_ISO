@@ -354,6 +354,37 @@ def radius_From_angRadius(angRadius=None, angRadiuserr=None, dist=None, disterr=
     Rerr = unumpy.std_devs(z)
     return R, Rerr
 
+def mean_density_from_MR(M_msun, R_rsun, M_msunerr, R_rsunerr):
+    """Mean stellar density rho_bar = 3M / (4 pi R^3) from mass and radius.
+
+    Parameters
+    ----------
+    M_msun, R_rsun : float
+        Mass in solar masses and radius in solar radii.
+    M_msunerr, R_rsunerr : float
+        1-sigma uncertainties (same units). Non-finite values are treated as 0.
+
+    Returns
+    -------
+    density, density_err : float
+        Average density in g cm^-3 and propagated 1-sigma uncertainty, assuming
+        uncorrelated errors on M and R:
+        (delta rho / rho)^2 = (delta M / M)^2 + (3 delta R / R)^2.
+    """
+    M_sun_g = 1.98847e33
+    R_sun_cm = 6.957e10
+    if not np.isfinite(M_msun) or not np.isfinite(R_rsun):
+        return np.nan, np.nan
+    if M_msun <= 0 or R_rsun <= 0:
+        return np.nan, np.nan
+    dM = float(M_msunerr) if np.isfinite(M_msunerr) else 0.0
+    dR = float(R_rsunerr) if np.isfinite(R_rsunerr) else 0.0
+    mass_g = M_msun * M_sun_g
+    radius_cm = R_rsun * R_sun_cm
+    density = 3.0 * mass_g / (4.0 * np.pi * radius_cm ** 3)
+    rel = np.sqrt((dM / M_msun) ** 2 + (3.0 * dR / R_rsun) ** 2)
+    density_err = density * rel
+    return float(density), float(density_err)
 
 def gaussian_func(x, mu, sig):
     return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
