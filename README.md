@@ -1,6 +1,6 @@
 # SEDEX_ISO: An Extended Version of SEDEX with Isochrone Fitting Capability
 
-**SEDEX_ISO** is an enhanced version of SEDEX, incorporating the **isochrone fitting** functionalities from the [astroARIADNE](https://github.com/jvines/astroARIADNE.git) codebase. This integration utilizes the **ISOCHRONE package**, allowing SEDEX_ISO to provide a more comprehensive analysis pipeline for stellar parameters.
+**SEDEX_ISO** is an enhanced version of [SEDEX](https://github.com/Jieyu126/SEDEX), incorporating the **isochrone fitting** functionalities from the [astroARIADNE](https://github.com/jvines/astroARIADNE.git) codebase. This integration utilizes the **ISOCHRONE package**, allowing SEDEX_ISO to provide a more comprehensive analysis pipeline for stellar parameters.
 
 ## Key Features of SEDEX_ISO
 
@@ -68,4 +68,15 @@ The usage of SEDEX_ISO closely follows SEDEX with additional isochrone fitting s
 
 By incorporating **isochrone fitting**, SEDEX_ISO provides a more **comprehensive** approach to stellar characterization, making it particularly useful for studies involving stellar ages, mass distributions, and evolutionary states.
 
+## Software Attribution
+
+SEDEX_ISO is an extension of [SEDEX](https://github.com/Jieyu126/SEDEX) (Yu et al. 2022), with additional isochrone-fitting functionality incorporating modified code from [astroARIADNE](https://github.com/jvines/astroARIADNE) (Vines & Jenkins 2022).
+
+The original authors retain copyright in their respective contributions. See [NOTICE.md](NOTICE.md) for details.
+
+## License
+
+SEDEX_ISO is distributed under the MIT License.
+
+The original SEDEX and astroARIADNE copyright and license notices are preserved in the `THIRD_PARTY_LICENSES` directory.
 ---
