@@ -1,3 +1,17 @@
+# Isochrone fitting module for SEDEX_ISO
+#
+# Portions of this module are adapted from astroARIADNE:
+# https://github.com/jvines/astroARIADNE
+#
+# Original code:
+# Copyright (c) 2019 Jose Vines
+# Licensed under the MIT License.
+#
+# Modifications and integration:
+# Copyright (c) 2026 Jiayue Zhang
+#
+# See THIRD_PARTY_LICENSES/astroARIADNE-LICENSE.
+
 from IsochroneFitFunctions import estimate, plot_bma_HR
 from SedFitFunctions import mean_density_from_MR
 from inlist import *
