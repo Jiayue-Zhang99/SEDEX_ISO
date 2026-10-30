@@ -1,0 +1,23 @@
+
+{
+  "title": "SEDEX_ISO: A Pipeline for Stellar Spectral Energy Distribution and Isochrone Fitting",
+  "creators": [
+    {
+      "name": "Zhang, Jiayue",
+      "orcid": "0009-0002-5981-8520"
+    }
+  ],
+  "description": "SEDEX_ISO is a Python-based pipeline that combines stellar spectral energy distribution (SED) fitting with isochrone-based inference of fundamental stellar parameters. It is developed as an extension of SEDEX (Yu et al. 2022) and incorporates modified code components from astroARIADNE (Vines & Jenkins 2022).",
+  "version": "1.0.0",
+  "upload_type": "software",
+  "license": "mit",
+  "access_right": "open",
+  "keywords": [
+    "stellar parameters",
+    "spectral energy distribution",
+    "SED fitting",
+    "isochrone fitting",
+    "stellar astrophysics",
+    "Python"
+  ]
+}
