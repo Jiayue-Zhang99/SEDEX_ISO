@@ -1,0 +1,25 @@
+
+cff-version: 1.2.0
+
+message: "If you use SEDEX_ISO in your research, please cite this software release and acknowledge the original SEDEX and astroARIADNE publications."
+
+type: software
+
+title: "SEDEX_ISO: A Pipeline for Stellar Spectral Energy Distribution and Isochrone Fitting"
+
+authors:
+  - family-names: Zhang
+    given-names: Jiayue
+    orcid: "https://orcid.org/0009-0002-5981-8520"
+
+version: 1.0.0
+
+license: MIT
+
+repository-code: "https://github.com/Jiayue-Zhang99/SEDEX_ISO"
+
+keywords:
+  - stellar parameters
+  - spectral energy distribution
+  - isochrone fitting
+  - stellar astrophysics
